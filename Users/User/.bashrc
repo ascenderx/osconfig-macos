@@ -76,7 +76,7 @@ then
   PS1_SYM="#"
   PS1_SYM_COL=$PS1_BY
 else
-  PS1_SYM="$"
+  PS1_SYM="$"`
   PS1_SYM_COL=$PS1_BG
 fi
 
