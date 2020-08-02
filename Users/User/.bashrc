@@ -1,17 +1,15 @@
 #!/usr/bin/env bash
 
 ##########
-# This file is meant for non-login Bash shells (most terminal windows on the
-# desktop).
-#
+# This file is meant for non-login Bash shells (most terminal windows on the desktop).
 # For more aliases, options, commands, &c., consult your distro's default bashrc file (e.g. /etc/bashrc).
 ##########
 
 # Import POSIX-shell (sh) configurations, including any $PATH additions.
-F="~/.profile"
-if [[ -f $F ]]
+F="$HOME/.profile"
+if [[ -f "$F" ]]
 then
-  source $F
+  source "$F"
 fi
 
 # If we're not in an interactive shell, then quit here.
@@ -25,10 +23,10 @@ esac
 ##########
 
 # Import variables ANSI TTY formatting colors and codes.
-F="~/.TermConfig/BashFormat.sh"
-if [[ -f $F ]]
+F="$HOME/.TermConfig/BashFormat.sh"
+if [[ -f "$F" ]]
 then
-  source $F
+  source "$F"
 fi
 
 # Query the user for all multiple-file operations.
@@ -51,17 +49,13 @@ alias fgrep="/usr/bin/env fgrep --color"
 # See `ls --help` or `man ls` for more details.
 ##########
 
-case $(uname -s) in
-  *Darwin*)
-    COLOR_OPT="-G"
-    GROUP_OPT=
-    F="~/.TermConfig/LSColorsBSD.sh"
-    if [[ -f $F ]]
-    then
-      source $F
-    fi
-  ;;
-esac
+COLOR_OPT="-G"
+GROUP_OPT=
+F="$HOME/.TermConfig/LSColorsBSD.sh"
+if [[ -f "$F" ]]
+then
+  source "$F"
+fi
 
 # Display files and folders with suffixes, in multi-column mode, with colors.
 alias ls="/usr/bin/env ls -Fx $COLOR_OPT $GROUP_OPT"
@@ -109,10 +103,10 @@ shopt -s cmdhist
 shopt -s expand_aliases
 
 # Import bash utils (and, by extension, user scripts)
-F="~/.TermConfig/BashUtils.sh"
-if [[ -f $F ]]
+F="$HOME/.TermConfig/BashUtils.sh"
+if [[ -f "$F" ]]
 then
-  source $F
+  source "$F"
 fi
 
 # Clean up temporary variables.

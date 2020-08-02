@@ -5,17 +5,8 @@
 ##########
 
 # Import user scripts.
-F="$HOME/.TermConfig/BashScripts"
-if [[ -e $F ]] && [[ -d $F ]]
-then
-  pushd $F > /dev/null
-  for f in $(/usr/bin/env ls -A1)
-  do
-    source $F/$f
-  done
-  popd > /dev/null
-fi
-unset F
+source "$HOME/.TermConfig/BashScripts/GitScripts.sh"
+source "$HOME/.TermConfig/BashScripts/MacOSScripts.sh"
 
 # Fork a specified process and suppress stderr.
 function fork {
@@ -50,6 +41,3 @@ function ex {
     echo "\"$1\" is not a valid file."
   fi
 }
-
-# Clean up temporary variables.
-unset F
