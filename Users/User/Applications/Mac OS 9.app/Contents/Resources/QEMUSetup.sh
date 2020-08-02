@@ -3,18 +3,22 @@
 ##########
 # Install QEMU
 ##########
+
 brew install qemu
 
 ##########
 # Download and extract a Mac OS 9 image.
 ##########
+
 # https://macintoshgarden.org/apps/macintosh-system-922-1021-power-macintosh-g4-mirrored-drive-doors-mdd
 
 ##########
 # Set up QEMU for Mac OS 9
 ##########
+
 # Create the shared disk image.
-qemu-img create -f raw -o size=256M Shared.img
+D="$HOME/Applications/MacOS 9 (QEMU).app/Contents/Resources"
+qemu-img create -f raw -o size=256M "$D/Shared.img"
 # Run the setup/installer.
 /usr/local/bin/qemu-system-ppc \
   -bios openbios-ppc \
