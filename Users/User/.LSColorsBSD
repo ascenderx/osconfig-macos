@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/false
 
 ##########
 # This file is intended for BSD and variants, including macOS.

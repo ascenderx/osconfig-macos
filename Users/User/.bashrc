@@ -1,41 +1,37 @@
-#!/usr/bin/env bash
-
 ##########
-# This file is meant for non-login Bash shells (most terminal windows on the desktop).
-# For more aliases, options, commands, &c., consult your distro's default bashrc file (e.g. /etc/bashrc).
+# This file is intended for Bourne-again Shells (bash).
+# This file by default is sourced in non-login mode, though it can be
+# sourced in login mode as well from .bash_profile.
 ##########
 
-# Import POSIX-shell (sh) configurations, including any $PATH additions.
-F="$HOME/.profile"
-if [[ -f "$F" ]]
+# Set file creation mask.
+# Each set bit is an unset flag for each new file.
+# Example: umask 022 means chmod go-w.
+umask 022
+
+# Set $PATH so that it includes the user's privates binaries, if the
+# direcroty exists.
+if [[ -d "$HOME/bin" ]]
 then
-  source "$F"
+  export PATH="$HOME/bin:$PATH"
 fi
 
-# If we're not in an interactive shell, then quit here.
-case $- in
-  *i*) ;;
-  *) return ;;
-esac
-
-##########
-# Aliases for builtin programs
-##########
-
-# Import variables ANSI TTY formatting colors and codes.
-F="$HOME/.TermConfig/BashFormat.sh"
-if [[ -f "$F" ]]
+# Test for an interactive shell. There is no need to set anything
+# past this point for scp and rcp, and it's important to refrain 
+# from outputting anything in those cases.
+if [[ $- != *i* ]]
 then
-  source "$F"
+	# Shell is non-interactive. Be done now!
+	return
 fi
 
-# Query the user for all multiple-file operations.
-# This should help prevent accidental deletions (rm).
-alias rm="/usr/bin/env rm -i"
+# Query on deletion, etc.
 alias cp="/usr/bin/env cp -i"
 alias mv="/usr/bin/env mv -i"
+alias rm="/usr/bin/env rm -i"
 
-# Use human-readable file sizes when checking free space, disk lists, etc.
+# Use human-readable file sizes when checking free space, disk
+# listings, etc.
 alias df="/usr/bin/env df -h"
 alias du="/usr/bin/env du -h"
 
@@ -44,70 +40,48 @@ alias grep="/usr/bin/env grep --color"
 alias egrep="/usr/bin/env egrep --color"
 alias fgrep="/usr/bin/env fgrep --color"
 
-##########
-# Aliases for listing directories
-# See `ls --help` or `man ls` for more details.
-##########
-
-COLOR_OPT="-G"
-GROUP_OPT=
-F="$HOME/.TermConfig/LSColorsBSD.sh"
-if [[ -f "$F" ]]
+# List directories in color, directories first.
+if [[ -f "$HOME/.LSColorsBSD" ]]
 then
-  source "$F"
+  source $HOME/.LSColorsBSD
 fi
 
-# Display files and folders with suffixes, in multi-column mode, with colors.
-alias ls="/usr/bin/env ls -Fx $COLOR_OPT $GROUP_OPT"
+alias ls="/usr/bin/env ls -FGx"
 
-##########
-# Terminal settings
-##########
+# Colorize the prompt.
+shellstr="\[\e[1;31m\]""bash"
+userstr="\[\e[1;33m\]""\u"
+atstr="\[\e[1;32m\]""@"
+hoststr="\[\e[1;31m\]""\h"
+dirstr="\[\e[1;36m\]""\W"
+symstr="\[\e[1;32m\]""\$"
+reset="\[\e[0m\]"
 
-# Set terminal prompt character based on root status ($ vs #).
-if [[ $EUID == 0 ]]
-then
-  PS1_SYM="#"
-  PS1_SYM_COL=$PS1_BY
-else
-  PS1_SYM="$"
-  PS1_SYM_COL=$PS1_BG
-fi
+PS1="$shellstr $userstr$atstr$hoststr $dirstr $symstr$reset "
 
-# Set terminal prompt: "user@host pwd $ "
-PS1="$PS1_BY\u$PS1_BG@$PS1_BM\h $PS1_BC\W $PS1_SYM_COL$PS1_SYM $PS1_X"
-unset PS1_SYM
-unset PS1_SYM_COL
+unset shellstr userstr atstr hoststr dirstr symstr reset
 
-# Terminal command: set title on each input line.
-PROMPT_COMMAND='THISDIR=$(basename "$PWD"); echo -ne "\x1b]0;$USER@$HOSTNAME:$THISDIR\x07"; unset THISDIR'
+# Set the terminal command to update the title on each line.
+PROMPT_COMMAND='thisdir=$(basename "$PWD"); echo -ne "\x1b]0;$USER@$HOSTNAME:$thisdir\x07"; unset thisdir'
 
-# Bash history size settings.
+# History size settings.
 export HISTSIZE=1000
 export HISTFILESIZE=2000
 
-# Don't put duplicate lines or lines starting with space in history.
+# Don't put duplicate lines or lines starting with spaces in the 
+# history.
 export HISTCONTROL=ignoreboth
-
-# Check the window size after each command, and, if necessary, update the
-# values of LINES and COLUMNS.
-shopt -s checkwinsize
 
 # Append to the history file; don't overwrite it.
 shopt -s histappend
 
-# Store multi-line command as a single command.
+# Store multi-line commands as a single command.
 shopt -s cmdhist
+
+# Check the window size after each command, and, if necessary, 
+# update the values of LINES and COLUMNS.
+shopt -s checkwinsize
 
 # Expand aliases.
 shopt -s expand_aliases
 
-# Import bash utils (and, by extension, user scripts)
-F="$HOME/.TermConfig/BashUtils.sh"
-if [[ -f "$F" ]]
-then
-  source "$F"
-fi
-
-# Clean up temporary variables.
-unset F
