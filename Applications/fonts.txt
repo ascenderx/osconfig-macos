@@ -10,3 +10,7 @@ Computer Modern Unicode
 
 # https://www.jetbrains.com/lp/mono/
 JetBrains Mono
+
+# https://github.com/belluzj/fantasque-sans
+Fantasque Sans Mono
+
